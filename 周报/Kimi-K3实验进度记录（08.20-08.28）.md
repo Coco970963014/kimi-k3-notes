@@ -122,20 +122,19 @@ E1 的 `local_batch_size=2, seq_len=8192` 由 MMDataLoader bin-pack 为每 rank 
   - P1：[experiment/e2-p1-selective-20260826](https://github.com/Coco970963014/torchtitan/tree/experiment/e2-p1-selective-20260826)（特性 commit `6f9af937`，HEAD `f7efdf55`）
 
 ![E2 四臂 step 耗时构成](../attachments/e2-step-time-breakdown.png)
+<p align="center">E2 四臂 step 耗时构成</p>
 
 ![Feature Off 单Step内存变化](../attachments/e2-memory-stage-feature-off.png)
-
-Feature Off 单Step内存变化
+<p align="center">Feature Off 单Step内存变化</p>
 
 ![Full AC ON 单Step内存变化](../attachments/e2-memory-stage-fullac-on.png)
-
-Full AC ON 单Step内存变化
+<p align="center">Full AC ON 单Step内存变化</p>
 
 ![P0 ON 单Step内存变化](../attachments/e2-memory-stage-p0-on.png)
-P0 ON 单Step内存变化
+<p align="center">P0 ON 单Step内存变化</p>
 
 ![P1 ON 单Step内存变化](../attachments/e2-memory-stage-p1-on.png)
-P1 ON 单step内存变化
+<p align="center">P1 ON 单Step内存变化</p>
 
 内存工具使用：
 Timeline旗帜标记，框选范围，再Memory中联动呈现，用于分析不同阶段内存变化，这个功能很好用，点赞推广下
@@ -184,7 +183,9 @@ swap 代价   ≈ 2 × V / B        （33.4 GiB 激活往返搬运；实测 +5.2
 ```
 
 其中`T_forward`为一次前向传播耗时，重计算可近似于认为，在backward 时重算一次前向；**实测 +0.91s，仅占 step 的 5%**（0.95s / 18.9s，backward 占 94%）。
+
 ![E2 四臂 step 耗时构成](../attachments/e2-step-time-breakdown.png)
+<p align="center">E2 四臂 step 耗时构成</p>
 
 计算swap 代价，相当于将 33.4 GiB 激活 往返搬运2次，B为搬运带宽，实测约20GB/s。
 
@@ -195,7 +196,9 @@ swap 代价   ≈ 2 × V / B        （33.4 GiB 激活往返搬运；实测 +5.2
 
 PS：Backward时间极长主要原因是chunk_kda_bwd_kernel_wy_dA_finalize_npu、chunk_kda_bwd_kernel_intra_npu算子执行耗时长，是否有优化空间？
 python侧由ChunkKDAFunctionBackward下发（chunk_kda_bwd_kernel_wy_dA_finalize_npu、chunk_kda_bwd_kernel_intra_npu）
+
 ![KDA backward 内核热点](../attachments/e2-kda-bwd-kernels.png)
+<p align="center">KDA backward 内核热点</p>
 
 
 
