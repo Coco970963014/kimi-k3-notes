@@ -4,6 +4,9 @@ set -euo pipefail
 # Run on the A5 host: bash start_tk_kimik3.sh YOUR_HOST_USERNAME
 # This uses the base image, not packages installed in a colleague's container.
 HOST_USER="${1:?Usage: bash start_tk_kimik3.sh YOUR_HOST_USERNAME}"
+if [[ "$EUID" -ne 0 ]]; then
+    exec sudo -- /bin/bash "$(readlink -f -- "$0")" "$HOST_USER"
+fi
 NAME=tk-kimik3
 IMAGE=swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:9.1.0-950-ubuntu22.04-py3.12
 
@@ -37,17 +40,14 @@ for path in /usr/local/dcmi /usr/local/bin/npu-smi \
 done
 
 if [[ ! -d "$WORKSPACE" ]]; then
-    if [[ "$EUID" -eq 0 ]]; then
-        install -d -o "$HOST_USER" -g "$(id -gn "$HOST_USER")" "$WORKSPACE"
-    else
-        mkdir -p "$WORKSPACE"
-    fi
+    install -d -o "$HOST_USER" -g "$(id -gn "$HOST_USER")" "$WORKSPACE"
 fi
 
 # Eight mapped cards are not reserved; coordinate device use with colleagues.
 # Host networking shares ports. Private IPC does not share their /dev/shm.
 docker run -dit \
     --name "$NAME" \
+    --user 0:0 \
     --network host \
     --ipc private \
     --shm-size 16g \
@@ -59,4 +59,4 @@ docker run -dit \
     "$IMAGE" -l
 
 printf 'Workspace: %s -> /workspace\n' "$WORKSPACE"
-printf 'Enter: docker exec -it %s /bin/bash -l\n' "$NAME"
+printf 'Enter: sudo docker exec -it --user 0:0 %s /bin/bash -l\n' "$NAME"
