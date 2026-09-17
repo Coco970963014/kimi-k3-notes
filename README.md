@@ -8,6 +8,7 @@ Kimi K3 / TorchTitan NPU 适配的私人实验笔记仓（私有，非代码交�
 - `周报/Kimi-K3实验进度记录（08.06-08.19）.md`
 - `计划/内存特性优化 下一步计划 详细记录.md`
 - `attachments/` 图片等附件
+- [`a5-handoff/`](a5-handoff/README.md) A5 内网环境部署、验证与模型跑通的交接文档
 
 ## 约定
 
