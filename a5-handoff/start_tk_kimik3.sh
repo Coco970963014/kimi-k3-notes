@@ -27,8 +27,19 @@ docker image inspect "$IMAGE" >/dev/null || {
 
 devices=()
 for node in /dev/davinci{0..7} /dev/davinci_manager /dev/hisi_hdc /dev/ummu /dev/uburma; do
-    [[ -c "$node" ]] || { echo "ERROR: Missing character device: $node" >&2; exit 1; }
-    devices+=(--device "$node")
+    if [[ -d "$node" ]]; then
+        # A5 ummu/uburma may contain device nodes rather than be nodes themselves.
+        children="$(find -L "$node" -type c -print)"
+        [[ -n "$children" ]] || { echo "ERROR: No character devices inside: $node" >&2; exit 1; }
+        while IFS= read -r child; do
+            devices+=(--device "$child")
+        done <<< "$children"
+    elif [[ -c "$node" ]]; then
+        devices+=(--device "$node")
+    else
+        echo "ERROR: Missing device or device directory: $node" >&2
+        exit 1
+    fi
 done
 
 mounts=()
