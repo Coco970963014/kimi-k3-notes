@@ -1,26 +1,27 @@
 # A5 内外交接
 
-本目录用于外网教师 agent 与内网 A5 执行 agent 之间传递任务和脱敏结果，用户负责转交。不是自动同步或远程执行系统，不要求 A5 能访问 GitHub。
+本目录用于外网教师 agent 向内网 A5 下发任务，并记录用户口述的脱敏结果。内网文件无法传回；简单操作由用户手动执行，复杂操作可交给内网 agent。不是自动同步或远程执行系统，不要求 A5 能访问 GitHub。
 
 ## 入口
 
 - [CURRENT.md](CURRENT.md)：唯一有效的当前任务，由教师 agent 更新。
 - [RUNBOOK.md](RUNBOOK.md)：目标、验收顺序与禁止事项。
-- [RESULT-TEMPLATE.md](RESULT-TEMPLATE.md)：内网 agent 回传格式。
+- [RESULT-TEMPLATE.md](RESULT-TEMPLATE.md)：用户口述要点和教师记录格式，不要求生成或传回文件。
 - `results/<task-id>-<run-id>.md`：后续收到并脱敏的实际结果；尚无回传时不创建占位成功报告。
 
 ## 交接方式
 
 1. 教师 agent 发布当前任务并告知文档 commit SHA。
-2. 用户将该版本的 CURRENT.md、RUNBOOK.md、RESULT-TEMPLATE.md 转入内网。
-3. 内网 agent 核对任务 ID，只执行 CURRENT.md 的一个步骤；不执行整个 RUNBOOK。
-4. 内网 agent 保留本地完整日志，按模板生成脱敏摘要，由用户传回。不得自行 push、发布日志或申请外网权限。
-5. 教师 agent 核对结果，保存到 results/，更新当前状态；未通过时只下发本步骤的修正任务，不跳关。
+2. 教师每轮给出一个短步骤与最少反馈项；用户可手动执行，也可将文档转入内网交给 agent。
+3. 只执行 CURRENT.md 的当前步骤，不执行整个 RUNBOOK；手动操作不要求套用 agent 的报告格式。
+4. 用户口述关键结果即可，不要求传回文件、截图或完整日志。复杂运行的原始日志保留在内网；需要定位时由教师指定要在内网查看的局部信息。
+5. 教师根据口述整理到 results/，明确标注“用户口述，未核对原始日志”。缺失信息写 UNKNOWN，不把未报告的检查推定为通过；信息不足时只追问当前判定必需的字段。
+6. 教师更新当前状态；未通过时只下发本步骤的修正任务，不跳关。内网 agent 不得自行 push、发布日志或申请外网权限。
 
 给内网 agent 的固定提示：
 
 ```text
-阅读 a5-handoff/CURRENT.md 和 RUNBOOK.md。只执行 CURRENT.md 指定的任务，不自行安装、升级、打补丁或进入后续步骤。按 RESULT-TEMPLATE.md 回传脱敏结果；无法执行时说明阻塞，不猜测成功。执行结束立即停止，等待下一份任务。
+阅读 a5-handoff/CURRENT.md 和 RUNBOOK.md。只执行 CURRENT.md 指定的任务，不自行安装、升级、打补丁或进入后续步骤。将关键结果简短展示给用户，供用户口述；不要求用户传回文件。无法执行时说明阻塞，不猜测成功。执行结束立即停止，等待下一份任务。
 ```
 
 ## 信息边界
