@@ -4,7 +4,7 @@
 
 ## 成功定义
 
-以包含 TorchTitan PR #4025 的主线固定提交，使用 Kimi-K3 原生 FlexAttention 打通 debugmodel 训练链路：单卡 2 step，然后四卡 FSDP2 2 step。loss 与 grad norm 有限，所有 rank 正常退出，无 OOM、HCCL、storage 或算子错误。这不是完整规模模型验收。
+用户已指定 TorchTitan v0.3.0 为基线，需冻结该 tag 的完整 SHA，并重新核实 Kimi-K3 实现、配置和 CLI，不假定旧 PR #4025 命令可直接复用。使用原生 FlexAttention 打通 debugmodel 训练链路：单卡 2 step，然后四卡 FSDP2 2 step。loss 与 grad norm 有限，所有 rank 正常退出，无 OOM、HCCL、storage 或算子错误。这不是完整规模模型验收。
 
 ## 门禁顺序
 
@@ -24,7 +24,8 @@
 
 ## 依赖部署
 
-- 优先用 A5 内部已验证的完整版本组；torch 和 torch_npu 必须配套发布或同一内部构建批次，Triton-Ascend 使用该方案指定版本。
+- v0.3.0 上游发布验证：Python 3.11/3.12、torch 2.14.0；发布候选 CI 固定上游 Triton 3.8.0。这不是 A5 版本矩阵，不要求同时安装标准 Triton 与 Triton-Ascend。
+- 优先用 A5 内部已验证的完整版本组；torch 和 torch_npu 必须配套发布或同一内部构建批次，Triton-Ascend 使用该方案指定版本。现有同事容器允许先诊断，版本偏差单独记录，不自动升级。
 - 版本关系不明确就停止，向用户索取配套依据，不单包追新。
 - 安装必须另行授权并使用新 venv，不修改系统 Python，不删除旧环境。安装前后保存依赖快照与 diff，记录安装 wheel 的 SHA256；原始快照留在内网并检查敏感地址。
 - 910B3 的 torch 2.12 / torch_npu 2.12 / Triton-Ascend 3.6 探索组合不是 A5 推荐矩阵。

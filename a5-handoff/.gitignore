@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+artifacts/
+triton-cache/
+inductor-cache/
+compile-debug/

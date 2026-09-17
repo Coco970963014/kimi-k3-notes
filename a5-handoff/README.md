@@ -7,6 +7,7 @@
 - [CURRENT.md](CURRENT.md)：唯一有效的当前任务，由教师 agent 更新。
 - [RUNBOOK.md](RUNBOOK.md)：目标、验收顺序与禁止事项。
 - [RESULT-TEMPLATE.md](RESULT-TEMPLATE.md)：用户口述要点和教师记录格式，不要求生成或传回文件。
+- [DOCTOR.md](DOCTOR.md)：一键环境检查用法；脚本为 [a5_doctor.py](a5_doctor.py)，在内网执行，不联网安装。
 - `results/<task-id>-<run-id>.md`：后续收到并脱敏的实际结果；尚无回传时不创建占位成功报告。
 
 ## 交接方式
@@ -34,4 +35,4 @@
 
 ## 当前证据
 
-截至本目录初始化，尚未收到 A5 环境实测结果。此前 910B3 的 SDPA/compat 实验不计入 A5 原生 FlexAttention 验收。
+用户口述：宿主机 npu-smi、docker ps 正常，现借用同事已初步搭建的容器；容器具体软件版本和组件能力待检查。后续 TorchTitan 基线指定为 v0.3.0。此前 910B3 的 SDPA/compat 实验不计入 A5 原生 FlexAttention 验收。

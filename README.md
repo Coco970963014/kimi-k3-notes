@@ -12,5 +12,5 @@ Kimi K3 / TorchTitan NPU 适配的私人实验笔记仓（私有，非代码交�
 
 ## 约定
 
-- 本仓只收周报、计划与实验笔记，不放代码；代码变更一律在 torchtitan 工作仓以可审查 patch/commit 传递。
+- 本仓收周报、计划与实验笔记；`a5-handoff/` 经授权可放独立环境诊断脚本，不放模型实现或兼容补丁。模型代码变更一律在 torchtitan 工作仓以可审查 patch/commit 传递。
 - 不得写入 token、密码、服务器凭据等敏感信息。
